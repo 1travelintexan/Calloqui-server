@@ -43,7 +43,7 @@ router.post("/create", (req, res) => {
 // will handle all GET requests to http:localhost:5005/api/todos/:todoId
 //PS: Don't type :todoId , it's something dynamic,
 router.get("/events/:eventId", (req, res) => {
-  EventModel.findById(req.params.todoId)
+  EventModel.findById(req.params.eventId)
     .then((response) => {
       res.status(200).json(response);
     })
