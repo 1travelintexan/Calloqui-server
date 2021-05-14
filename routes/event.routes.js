@@ -21,13 +21,14 @@ router.get("/events", (req, res) => {
 // will handle all POST requests to http:localhost:5005/api/create
 
 router.post("/create", (req, res) => {
-  const { name, description, date, location } = req.body;
+  const { name, image, description, date, location } = req.body;
   console.log(req.body);
   EventModel.create({
-    name: name,
-    description: description,
-    date: date,
-    location: location,
+    name,
+    image,
+    description,
+    date,
+    location,
   })
     .then((response) => {
       res.status(200).json(response);
