@@ -8,6 +8,6 @@ let EventSchema = new mongoose.Schema({
   location: String,
 });
 
-let EventModel = mongoose.model("surf-sess", EventSchema);
+let EventModel = mongoose.model("event", EventSchema);
 
 module.exports = EventModel;

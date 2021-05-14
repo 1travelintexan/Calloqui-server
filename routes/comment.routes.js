@@ -2,13 +2,17 @@ const express = require("express");
 const router = express.Router();
 let CommentModel = require("../models/Comment.model");
 
-// will handle all POST requests to http:localhost:5005/api/create
+// will handle all POST requests to http:localhost:5005/api/comment/create
 
-router.post("/create", (req, res) => {
-  const { description } = req.body;
+router.post("/comment/:eventId/create", (req, res) => {
+  const { comment } = req.body;
+  const { eventId } = req.params;
+  const owner = req.session.loggedInUser._id;
 
   CommentModel.create({
-    description,
+    comment,
+    owner,
+    eventId,
   })
     .then((response) => {
       res.status(200).json(response);
@@ -21,10 +25,10 @@ router.post("/create", (req, res) => {
     });
 });
 
-// will handle all GET requests to http:localhost:5005/api/events/:eventId
+// will handle all GET requests to http:localhost:5005/api/comments/:commentId
 //PS: Don't type :todoId , it's something dynamic,
-router.get("/events/:eventId", (req, res) => {
-  CommentModel.findById(req.params.eventId)
+router.get("/comment/:commentId", (req, res) => {
+  CommentModel.findById(req.params.commentId)
     .then((response) => {
       res.status(200).json(response);
     })
@@ -35,3 +39,5 @@ router.get("/events/:eventId", (req, res) => {
       });
     });
 });
+
+module.exports = router;

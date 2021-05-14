@@ -92,6 +92,7 @@ router.post("/signin", (req, res) => {
           //if it matches
           if (doesItMatch) {
             // req.session is the special object that is available to you
+            //session is the user that is using your app
             userData.passwordHash = "***";
             req.session.loggedInUser = userData;
             res.status(200).json(userData);
@@ -131,6 +132,7 @@ router.post("/logout", (req, res) => {
 
 // middleware to check if user is loggedIn
 const isLoggedIn = (req, res, next) => {
+  //req.session.loggedInUser is
   if (req.session.loggedInUser) {
     //calls whatever is to be executed after the isLoggedIn function is over
     next();

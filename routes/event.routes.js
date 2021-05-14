@@ -4,7 +4,7 @@ let EventModel = require("../models/Event.model");
 
 // NOTE: All your API routes will start from /api
 
-// will handle all GET requests to http:localhost:5005/api/todos
+// will handle all GET requests to http:localhost:5005/api/events
 router.get("/events", (req, res) => {
   EventModel.find()
     .then((events) => {
@@ -41,8 +41,8 @@ router.post("/create", (req, res) => {
     });
 });
 
-// will handle all GET requests to http:localhost:5005/api/todos/:todoId
-//PS: Don't type :todoId , it's something dynamic,
+// will handle all GET requests to http:localhost:5005/api/events/:eventId
+//PS: Don't type :eventsId , it's something dynamic,
 router.get("/events/:eventId", (req, res) => {
   EventModel.findById(req.params.eventId)
     .then((response) => {
@@ -56,7 +56,7 @@ router.get("/events/:eventId", (req, res) => {
     });
 });
 
-// will handle all DELETE requests to http:localhost:5005/api/todos/:id
+// will handle all DELETE requests to http:localhost:5005/api/events/:id
 router.delete("/events/:id", (req, res) => {
   EventModel.findByIdAndDelete(req.params.id)
     .then((response) => {
@@ -70,7 +70,7 @@ router.delete("/events/:id", (req, res) => {
     });
 });
 
-// will handle all PATCH requests to http:localhost:5005/api/todos/:id
+// will handle all PATCH requests to http:localhost:5005/api/events/:id
 router.patch("/events/:id", (req, res) => {
   let id = req.params.id;
   const { name, description, date, location } = req.body;

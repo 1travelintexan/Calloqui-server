@@ -46,8 +46,13 @@ app.use("/api", eventRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
 
+//linking the cloudinary routes
 const cloudinaryRoutes = require("./routes/file-upload.routes");
 app.use("/api", cloudinaryRoutes);
+
+// linkning the comment routes
+const commentRoutes = require("./routes/comment.routes");
+app.use("/api", commentRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
