@@ -8,7 +8,6 @@ const UserModel = require("../models/User.model");
 
 router.post("/signup", (req, res) => {
   const { username, email, password } = req.body;
-  console.log(username, email, password);
 
   // -----SERVER SIDE VALIDATION ----------
   /* 

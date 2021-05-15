@@ -10,6 +10,7 @@ let UserSchema = new Schema({
     type: String,
     required: true,
   },
+  avatar: String,
 });
 
 let UserModel = model("user", UserSchema);
