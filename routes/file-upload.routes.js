@@ -32,16 +32,22 @@ router.post("/upload/avatar", uploader.single("imageUrl"), (req, res, next) => {
   const avatar = { avatar: uploader.single("imageUrl") };
   UserModel.findOneAndUpdate(username, avatar, {
     new: true,
-  });
-  console.log("avatar sucess!");
-  if (!req.file) {
-    next(new Error("No file uploaded!"));
-    return;
-  }
-  //You will get the image url in 'req.file.path'
-  //store that in the DB
-  res.status(200).json({
-    image: req.file.path,
+  }).then((response) => {
+    console.log("avatar sucess!");
+    if (!req.file) {
+      next(new Error("No file uploaded!"));
+      return;
+    }
+    //You will get the image url in 'req.file.path'
+    //store that in the DB
+    res
+      .status(200)
+      .json({
+        image: req.file.path,
+      })
+      .catch((err) => {
+        console.log("err on server side");
+      });
   });
 });
 
