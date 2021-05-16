@@ -27,10 +27,24 @@ router.post("/comment/:eventId/create", (req, res) => {
 
 // will handle all GET requests to http:localhost:5005/api/comments/:commentId
 //PS: Don't type :todoId , it's something dynamic,
-router.get("/comment/:commentId", (req, res) => {
+router.get("/comments/:commentId", (req, res) => {
   CommentModel.findById(req.params.commentId)
     .then((response) => {
       res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
+//handle routes to get comments from db
+router.get("/comments", (req, res) => {
+  CommentModel.find()
+    .then((comments) => {
+      res.status(200).json(comments);
     })
     .catch((err) => {
       res.status(500).json({
