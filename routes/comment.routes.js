@@ -29,6 +29,7 @@ router.post("/comment/:eventId/create", (req, res) => {
 //PS: Don't type :todoId , it's something dynamic,
 router.get("/comments/:commentId", (req, res) => {
   CommentModel.findById(req.params.commentId)
+    .populate("owner")
     .then((response) => {
       res.status(200).json(response);
     })
@@ -43,6 +44,7 @@ router.get("/comments/:commentId", (req, res) => {
 //handle routes to get comments from db
 router.get("/comments", (req, res) => {
   CommentModel.find()
+    .populate("owner")
     .then((comments) => {
       res.status(200).json(comments);
     })

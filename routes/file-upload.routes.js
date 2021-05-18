@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const UserModel = require("../models/User.model");
+
 // include CLOUDINARY:
 const uploader = require("../config/cloudinary.config.js");
 
@@ -24,30 +24,6 @@ router.post("/upload", uploader.single("imageUrl"), (req, res, next) => {
   //store that in the DB
   res.status(200).json({
     image: req.file.path,
-  });
-});
-
-//avatar image route
-router.post("/upload/avatar", uploader.single("imageUrl"), (req, res, next) => {
-  const avatar = { avatar: uploader.single("imageUrl") };
-  UserModel.findOneAndUpdate(username, avatar, {
-    new: true,
-  }).then((response) => {
-    console.log("avatar sucess!");
-    if (!req.file) {
-      next(new Error("No file uploaded!"));
-      return;
-    }
-    //You will get the image url in 'req.file.path'
-    //store that in the DB
-    res
-      .status(200)
-      .json({
-        image: req.file.path,
-      })
-      .catch((err) => {
-        console.log("err on server side");
-      });
   });
 });
 

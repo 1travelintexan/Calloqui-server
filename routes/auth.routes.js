@@ -62,7 +62,6 @@ router.post("/signup", (req, res) => {
 // will handle all POST requests to http:localhost:5005/api/signin
 router.post("/signin", (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
 
   // -----SERVER SIDE VALIDATION ----------
   /*

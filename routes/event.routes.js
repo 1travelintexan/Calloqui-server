@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 let EventModel = require("../models/Event.model");
+let UserModel = require("../models/User.model");
+const uploader = require("../config/cloudinary.config.js");
 
 // NOTE: All your API routes will start from /api
 
@@ -18,17 +20,32 @@ router.get("/events", (req, res) => {
     });
 });
 
+// will handle all GET requests to http:localhost:5005/api/profile
+router.get("/profile", (req, res) => {
+  EventModel.find()
+    .then((events) => {
+      res.status(200).json(events);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
 // will handle all POST requests to http:localhost:5005/api/create
 
 router.post("/create", (req, res) => {
   const { name, image, description, date, location } = req.body;
-  console.log(req.body);
+  const owner = req.session.loggedInUser._id;
   EventModel.create({
     name,
     image,
     description,
     date,
     location,
+    owner,
   })
     .then((response) => {
       res.status(200).json(response);
@@ -43,7 +60,22 @@ router.post("/create", (req, res) => {
 
 // will handle all GET requests to http:localhost:5005/api/events/:eventId
 //PS: Don't type :eventsId , it's something dynamic,
-router.get("/events/:eventId", (req, res) => {
+router.get("/event/:eventId", (req, res) => {
+  EventModel.findById(req.params.eventId)
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
+// will handle all GET requests to http:localhost:5005/api/profile/:eventId
+//PS: Don't type :eventsId , it's something dynamic,
+router.get("/profile/:eventId", (req, res) => {
   EventModel.findById(req.params.eventId)
     .then((response) => {
       res.status(200).json(response);
@@ -57,8 +89,8 @@ router.get("/events/:eventId", (req, res) => {
 });
 
 // will handle all DELETE requests to http:localhost:5005/api/events/:id
-router.delete("/events/:id", (req, res) => {
-  EventModel.findByIdAndDelete(req.params.id)
+router.delete("/profile/:eventId", (req, res) => {
+  EventModel.findByIdAndDelete(req.params.eventId)
     .then((response) => {
       res.status(200).json(response);
     })
@@ -71,7 +103,7 @@ router.delete("/events/:id", (req, res) => {
 });
 
 // will handle all PATCH requests to http:localhost:5005/api/events/:id
-router.patch("/events/:id", (req, res) => {
+router.patch("/event/:id", (req, res) => {
   let id = req.params.id;
   const { name, description, date, location } = req.body;
   EventModel.findByIdAndUpdate(
@@ -97,4 +129,30 @@ router.patch("/events/:id", (req, res) => {
     });
 });
 
+//avatar image route
+// will handle all PATCH requests to http:localhost:5005/api/events/:id
+router.patch("/avatar/:id", uploader.single("imageUrl"), (req, res) => {
+  // let id = req.params.id;
+  const avatar = req.file.path;
+  const id = req.session.loggedInUser._id;
+
+  UserModel.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        avatar: avatar,
+      },
+    },
+    { new: true }
+  )
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
 module.exports = router;
