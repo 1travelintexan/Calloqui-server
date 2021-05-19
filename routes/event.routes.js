@@ -4,6 +4,7 @@ let EventModel = require("../models/Event.model");
 let UserModel = require("../models/User.model");
 const uploader = require("../config/cloudinary.config.js");
 
+// exra commment
 // NOTE: All your API routes will start from /api
 
 // will handle all GET requests to http:localhost:5005/api/events
