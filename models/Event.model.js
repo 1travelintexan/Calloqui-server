@@ -7,6 +7,7 @@ let EventSchema = new mongoose.Schema({
   description: String,
   date: String,
   location: String,
+  shaka: Number,
   owner: {
     type: Schema.Types.ObjectId,
     ref: "user",

@@ -37,7 +37,7 @@ router.get("/profile", (req, res) => {
 // will handle all POST requests to http:localhost:5005/api/create
 
 router.post("/create", (req, res) => {
-  const { name, image, description, date, location } = req.body;
+  const { name, image, description, date, location, shaka } = req.body;
   const owner = req.session.loggedInUser._id;
   EventModel.create({
     name,
@@ -45,6 +45,7 @@ router.post("/create", (req, res) => {
     description,
     date,
     location,
+    shaka,
     owner,
   })
     .then((response) => {
@@ -114,6 +115,7 @@ router.patch("/event/:id", (req, res) => {
         description: description,
         date: date,
         location: location,
+        shaka: Number,
       },
     },
     { new: true }
