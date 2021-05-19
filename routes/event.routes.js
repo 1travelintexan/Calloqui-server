@@ -132,6 +132,43 @@ router.patch("/event/:id", (req, res) => {
     });
 });
 
+//this is for the shaka update (likes)
+// will handle all PATCH requests to http:localhost:5005/api/events/:id/shaka
+router.patch("/event/:id/shaka", (req, res) => {
+  let id = req.params.id;
+  const owner = req.session.loggedInUser._id;
+
+  // find the event then get the array of shakas, check if user is inside array
+  let shaka = req.body.shaka;
+  let unlike = shaka.includes(owner);
+
+  EventModel.findByIdAndUpdate(
+    id,
+    unlike
+      ? {
+          $pull: {
+            shaka: owner,
+          },
+        }
+      : {
+          $addToSet: {
+            shaka: owner,
+          },
+        },
+
+    { new: true }
+  )
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
 //avatar image route
 // will handle all PATCH requests to http:localhost:5005/api/events/:id
 router.patch("/avatar/:id", uploader.single("imageUrl"), (req, res) => {

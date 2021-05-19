@@ -7,7 +7,12 @@ let EventSchema = new mongoose.Schema({
   description: String,
   date: String,
   location: String,
-  shaka: Number,
+  shaka: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
   owner: {
     type: Schema.Types.ObjectId,
     ref: "user",
