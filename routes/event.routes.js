@@ -50,7 +50,11 @@ router.post("/create", (req, res) => {
     owner,
   })
     .then((response) => {
-      res.status(200).json(response);
+      EventModel.findById(response._id)
+        .populate("owner")
+        .then((info) => {
+          res.status(200).json(info);
+        });
     })
     .catch((err) => {
       res.status(500).json({

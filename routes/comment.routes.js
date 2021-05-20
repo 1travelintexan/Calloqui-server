@@ -15,7 +15,17 @@ router.post("/comment/:eventId/create", (req, res) => {
     eventId,
   })
     .then((response) => {
-      res.status(200).json(response);
+      CommentModel.findById(response._id)
+        .populate("owner")
+        .then((info) => {
+          res.status(200).json(info);
+        })
+        .catch((err) => {
+          res.status(500).json({
+            error: "Something went wrong",
+            message: err,
+          });
+        });
     })
     .catch((err) => {
       res.status(500).json({
