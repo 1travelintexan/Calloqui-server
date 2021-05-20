@@ -50,6 +50,8 @@ router.post("/create", (req, res) => {
     owner,
   })
     .then((response) => {
+      console.log(response);
+      console.log(response._id);
       EventModel.findById(response._id)
         .populate("owner")
         .then((info) => {
