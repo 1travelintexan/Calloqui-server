@@ -116,7 +116,6 @@ router.patch("/event/:id", (req, res) => {
         description: description,
         date: date,
         location: location,
-        shaka: Number,
       },
     },
     { new: true }
