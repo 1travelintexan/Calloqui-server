@@ -27,7 +27,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24, //milli seconds, equal to one day
     },
     store: new MongoStore({
-      mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/Calloqui",
+      mongoUrl: process.env.MONGODB_URI || "mongodb://127.0.0.1/Kook-club",
       ttl: 60 * 60 * 24,
     }),
   })
