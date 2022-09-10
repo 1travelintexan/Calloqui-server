@@ -11,6 +11,12 @@ let UserSchema = new Schema({
     required: true,
   },
   avatar: String,
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
 });
 
 let UserModel = model("user", UserSchema);

@@ -3,8 +3,12 @@ const router = express.Router();
 
 //we installed bcrypt.js
 const bcrypt = require("bcryptjs");
-
 const UserModel = require("../models/User.model");
+
+const {
+  isLoggedIn,
+  isLoggedOut,
+} = require("../middlewares/session.middleware");
 
 router.post("/signup", (req, res) => {
   const { username, email, password } = req.body;
@@ -38,7 +42,7 @@ router.post("/signup", (req, res) => {
   // creating a salt
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(password, salt);
-  UserModel.create({ name: username, email, passwordHash: hash })
+  UserModel.create({ name: username, email, passwordHash: hash, friends: [] })
     .then((user) => {
       // ensuring that we don't share the hash as well with the user
       user.passwordHash = "***";
@@ -121,6 +125,25 @@ router.post("/signin", (req, res) => {
     });
 });
 
+router.get("/all-users", async (req, res) => {
+  try {
+    const allUsers = await UserModel.find();
+    res.status(200).json(allUsers);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+});
+
+router.get("/friend/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const friend = await UserModel.findById(id);
+    res.status(200).json(friend);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+});
+
 // will handle all POST requests to http:localhost:5005/api/logout
 router.post("/logout", (req, res) => {
   req.session.destroy();
@@ -128,23 +151,10 @@ router.post("/logout", (req, res) => {
   res.status(204).json({});
 });
 
-// middleware to check if user is loggedIn
-const isLoggedIn = (req, res, next) => {
-  //req.session.loggedInUser is
-  if (req.session.loggedInUser) {
-    //calls whatever is to be executed after the isLoggedIn function is over
-    next();
-  } else {
-    res.status(401).json({
-      message: "Unauthorized user",
-      code: 401,
-    });
-  }
-};
-
 // THIS IS A PROTECTED ROUTE
 // will handle all get requests to http:localhost:5005/api/user
 router.get("/user", isLoggedIn, (req, res, next) => {
+  console.log("/user ", req.session.loggedInUser);
   res.status(200).json(req.session.loggedInUser);
 });
 

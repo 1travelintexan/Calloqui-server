@@ -10,6 +10,8 @@ const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1/Kook-club";
 mongoose
   .connect(MONGO_URI, {
     family: 4,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
   .then((x) => {
     console.log(

@@ -38,7 +38,13 @@ router.get("/profile", (req, res) => {
 // will handle all POST requests to http:localhost:5005/api/create
 
 router.post("/create", (req, res) => {
-  const { name, image, description, date, location, shaka } = req.body;
+  const { name, description, date, location, shaka } = req.body;
+  let image =
+    "https://images.unsplash.com/photo-1505144808419-1957a94ca61e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdhdmV8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60";
+
+  if (req.body.image) {
+    image = req.body.image;
+  }
   const owner = req.session.loggedInUser._id;
   EventModel.create({
     name,
@@ -51,7 +57,6 @@ router.post("/create", (req, res) => {
   })
     .then((response) => {
       console.log(response);
-      console.log(response._id);
       EventModel.findById(response._id)
         .populate("owner")
         .then((info) => {
@@ -71,9 +76,11 @@ router.post("/create", (req, res) => {
 router.get("/event/:eventId", (req, res) => {
   EventModel.findById(req.params.eventId)
     .then((response) => {
+      console.log("here is a single event", response);
       res.status(200).json(response);
     })
     .catch((err) => {
+      console.log("failed to find single event", err);
       res.status(500).json({
         error: "Something went wrong",
         message: err,
