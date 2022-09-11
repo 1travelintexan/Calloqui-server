@@ -144,6 +144,23 @@ router.get("/friend/:id", async (req, res) => {
   }
 });
 
+router.get("/friend/add/:friendId", async (req, res) => {
+  const { friendId } = req.params;
+  const userId = req.session.loggedInUser._id;
+  try {
+    let userWithFriend = await UserModel.updateOne(
+      { _id: userId },
+      {
+        $push: { friends: friendId },
+        new: true,
+      }
+    );
+    res.status(200).json(userWithFriend);
+  } catch (err) {
+    console.log("error adding your friend", err);
+  }
+});
+
 // will handle all POST requests to http:localhost:5005/api/logout
 router.post("/logout", (req, res) => {
   req.session.destroy();
@@ -153,9 +170,12 @@ router.post("/logout", (req, res) => {
 
 // THIS IS A PROTECTED ROUTE
 // will handle all get requests to http:localhost:5005/api/user
-router.get("/user", isLoggedIn, (req, res, next) => {
-  console.log("/user ", req.session.loggedInUser);
-  res.status(200).json(req.session.loggedInUser);
+router.get("/user", isLoggedIn, async (req, res) => {
+  let currentUser = await UserModel.findById(
+    req.session.loggedInUser._id
+  ).populate("friends");
+  //console.log("current user, /user", currentUser);
+  res.status(200).json(currentUser);
 });
 
 module.exports = router;
