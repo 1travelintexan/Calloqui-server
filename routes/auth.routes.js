@@ -148,14 +148,16 @@ router.get("/friend/add/:friendId", async (req, res) => {
   const { friendId } = req.params;
   const userId = req.session.loggedInUser._id;
   try {
-    let userWithFriend = await UserModel.updateOne(
+    await UserModel.findOneAndUpdate(
       { _id: userId },
       {
         $push: { friends: friendId },
-        new: true,
       }
     );
-    res.status(200).json(userWithFriend);
+    let userWithNewFriend = await UserModel.findById(userId).populate(
+      "friends"
+    );
+    res.status(201).json(userWithNewFriend);
   } catch (err) {
     console.log("error adding your friend", err);
   }
