@@ -173,6 +173,7 @@ router.post("/logout", (req, res) => {
 // THIS IS A PROTECTED ROUTE
 // will handle all get requests to http:localhost:5005/api/user
 router.get("/user", isLoggedIn, async (req, res) => {
+  console.log("req.session", req.session);
   let currentUser = await UserModel.findById(
     req.session.loggedInUser._id
   ).populate("friends");

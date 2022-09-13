@@ -54,7 +54,7 @@ app.use("/api", authRoutes);
 const cloudinaryRoutes = require("./routes/file-upload.routes");
 app.use("/api", cloudinaryRoutes);
 
-// linkning the comment routes
+// linking the comment routes
 const commentRoutes = require("./routes/comment.routes");
 app.use("/api", commentRoutes);
 
