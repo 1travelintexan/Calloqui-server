@@ -58,6 +58,9 @@ app.use("/api", cloudinaryRoutes);
 const commentRoutes = require("./routes/comment.routes");
 app.use("/api", commentRoutes);
 
+// linking the chat routes
+const chatRoutes = require("./routes/chat.routes");
+app.use("/chat", chatRoutes);
 //if the user visits a page that is not in the browser, then the path will come here
 app.use((req, res, next) => {
   // If no routes match, send them the React HTML.
