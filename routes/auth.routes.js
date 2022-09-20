@@ -161,6 +161,25 @@ router.get("/friend/add/:friendId", async (req, res) => {
   }
 });
 
+//route to remove friend from DB
+router.get("/friend/remove/:friendId", async (req, res) => {
+  const { friendId } = req.params;
+  const userId = req.session.loggedInUser._id;
+  try {
+    await UserModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        $pull: { friends: friendId },
+      }
+    );
+    let userWithfriendRemoved = await UserModel.findById(userId).populate(
+      "friends"
+    );
+    res.status(201).json(userWithfriendRemoved);
+  } catch (err) {
+    console.log("error adding your friend", err);
+  }
+});
 // will handle all POST requests to http:localhost:5005/api/logout
 router.post("/logout", (req, res) => {
   req.session.destroy();

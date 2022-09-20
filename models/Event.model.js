@@ -6,7 +6,7 @@ let EventSchema = new mongoose.Schema({
   image: String,
   description: String,
   date: String,
-  location: String,
+  location: {},
   shaka: [
     {
       type: Schema.Types.ObjectId,
