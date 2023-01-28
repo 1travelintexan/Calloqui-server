@@ -56,7 +56,6 @@ router.post("/create", (req, res) => {
     owner,
   })
     .then((response) => {
-      console.log(response);
       EventModel.findById(response._id)
         .populate("owner")
         .then((info) => {
@@ -76,7 +75,6 @@ router.post("/create", (req, res) => {
 router.get("/event/:eventId", (req, res) => {
   EventModel.findById(req.params.eventId)
     .then((response) => {
-      console.log("here is a single event", response);
       res.status(200).json(response);
     })
     .catch((err) => {
