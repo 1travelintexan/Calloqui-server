@@ -56,9 +56,11 @@ router.get("/comments", (req, res) => {
   CommentModel.find()
     .populate("owner")
     .then((comments) => {
+      console.log("here are the comments", comments);
       res.status(200).json(comments);
     })
     .catch((err) => {
+      console.log("problem with comments", err);
       res.status(500).json({
         error: "Something went wrong",
         message: err,

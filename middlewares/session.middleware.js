@@ -1,6 +1,6 @@
 // middleware to check if user is loggedIn
 const isLoggedIn = (req, res, next) => {
-  console.log("user from middleware", req.session);
+  //console.log("user from middleware", req.session);
   //req.session.loggedInUser is
   if (req.session.loggedInUser) {
     //calls whatever is to be executed after the isLoggedIn function is over

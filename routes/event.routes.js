@@ -45,6 +45,7 @@ router.post("/create", (req, res) => {
   if (req.body.image) {
     image = req.body.image;
   }
+  console.log("create event route user", req.session);
   const owner = req.session.loggedInUser._id;
   EventModel.create({
     name,
@@ -75,6 +76,7 @@ router.post("/create", (req, res) => {
 router.get("/event/:eventId", (req, res) => {
   EventModel.findById(req.params.eventId)
     .then((response) => {
+      console.log("single event", response);
       res.status(200).json(response);
     })
     .catch((err) => {

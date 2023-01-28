@@ -194,7 +194,7 @@ router.get("/user", isLoggedIn, async (req, res) => {
     req.session.loggedInUser._id
   ).populate("friends");
   //console.log("current user, /user", currentUser);
-  console.log("here is the user session", req.session);
+  // console.log("here is the user session", req.session);
   res.status(200).json(currentUser);
 });
 
