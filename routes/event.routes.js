@@ -64,6 +64,7 @@ router.post("/create", (req, res) => {
         });
     })
     .catch((err) => {
+      console.log("error creating event", err);
       res.status(500).json({
         error: "Something went wrong",
         message: err,
