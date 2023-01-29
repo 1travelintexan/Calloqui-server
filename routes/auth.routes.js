@@ -90,6 +90,7 @@ router.post("/signin", isLoggedOut, async (req, res) => {
   try {
     // Find if the user exists in the database
     let foundUser = await UserModel.findOne({ email });
+    console.log("found user", foundUser);
     //check if passwords match
     try {
       let doesItMatch = await bcrypt.compare(password, foundUser.passwordHash);
