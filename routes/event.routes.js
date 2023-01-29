@@ -185,9 +185,9 @@ router.patch("/event/:id/shaka", (req, res) => {
 //avatar image route
 // will handle all PATCH requests to http:localhost:5005/api/events/:id
 router.patch("/avatar/:id", uploader.single("imageUrl"), (req, res) => {
-  // let id = req.params.id;
+  let id = req.params.id;
   const avatar = req.file.path;
-  const id = req.session.loggedInUser._id;
+  //const id = req.session.loggedInUser._id;
 
   UserModel.findByIdAndUpdate(
     id,
