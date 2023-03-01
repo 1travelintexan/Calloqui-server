@@ -27,7 +27,8 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24, //milli seconds, equal to one day
     },
     store: new MongoStore({
-      mongoUrl: process.env.MONGODB_URI || "mongodb://127.0.0.1/Kook-club",
+      mongoUrl:
+        "mongodb+srv://kook-club-main-db-0411f02b523:nH35dSWKatGxYqCVE1TYjSnZZ7j5Xj@prod-us-central1-2.ih9la.mongodb.net/kook-club-main-db-0411f02b523",
       ttl: 60 * 60 * 24,
     }),
   })
