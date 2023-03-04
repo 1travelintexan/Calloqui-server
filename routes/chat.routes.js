@@ -7,7 +7,6 @@ router.post("/conversation", async (req, res) => {
   // eg. participants = ['609b63324f3c1632c8ff35f4', '609b63644f3c1632c8ff35f5']
   const { participants } = req.body;
   try {
-    console.log("here");
     let foundConversation = await Conversation.findOne({
       participants: { $all: participants },
     });

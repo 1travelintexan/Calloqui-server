@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const uploader = require("../config/cloudinary.config.js");
 
-//we installed bcrypt.js
 const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
 
@@ -37,9 +37,6 @@ router.post("/signup", isLoggedOut, async (req, res) => {
       return;  
     }
     */
-
-  // NOTE: We have used the Sync methods here.
-  // creating a salt
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(password, salt);
   try {
@@ -55,7 +52,7 @@ router.post("/signup", isLoggedOut, async (req, res) => {
   } catch (err) {
     if (err.code === 11000) {
       res.status(500).json({
-        errorMessage: "username or email entered already exists!",
+        errorMessage: "Username or Email entered already exists",
         message: err,
       });
     } else {
@@ -184,12 +181,10 @@ router.get("/friend/remove/:friendId", async (req, res) => {
 // will handle all POST requests to http:localhost:5005/api/logout
 router.post("/logout", (req, res) => {
   req.session.destroy();
-  // Nothing to send back to the user
+  console.log("here", req.session);
   res.status(204).json({});
 });
 
-// THIS IS A PROTECTED ROUTE
-// will handle all get requests to http:localhost:5005/api/user
 router.get("/user", isLoggedIn, async (req, res) => {
   let currentUser = await UserModel.findById(
     req.session.loggedInUser._id
@@ -197,6 +192,29 @@ router.get("/user", isLoggedIn, async (req, res) => {
   //console.log("current user, /user", currentUser);
   // console.log("here is the user session", req.session);
   res.status(200).json(currentUser);
+});
+
+router.post("/avatar/:id", uploader.single("imageUrl"), (req, res) => {
+  let id = req.params.id;
+  const avatar = req.file.path;
+  UserModel.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        avatar: avatar,
+      },
+    },
+    { new: true }
+  )
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
 });
 
 module.exports = router;

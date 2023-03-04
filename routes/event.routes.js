@@ -1,13 +1,7 @@
 const express = require("express");
 const router = express.Router();
 let EventModel = require("../models/Event.model");
-let UserModel = require("../models/User.model");
-const uploader = require("../config/cloudinary.config.js");
 
-// exra commment
-// NOTE: All your API routes will start from /api
-
-// will handle all GET requests to http:localhost:5005/api/events
 router.get("/events", (req, res) => {
   EventModel.find()
     .then((events) => {
@@ -182,30 +176,4 @@ router.patch("/event/:id/shaka", (req, res) => {
     });
 });
 
-//avatar image route
-// will handle all PATCH requests to http:localhost:5005/api/events/:id
-router.patch("/avatar/:id", uploader.single("imageUrl"), (req, res) => {
-  let id = req.params.id;
-  const avatar = req.file.path;
-  //const id = req.session.loggedInUser._id;
-
-  UserModel.findByIdAndUpdate(
-    id,
-    {
-      $set: {
-        avatar: avatar,
-      },
-    },
-    { new: true }
-  )
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
-      });
-    });
-});
 module.exports = router;
