@@ -197,6 +197,7 @@ router.get("/user", isLoggedIn, async (req, res) => {
 router.post("/avatar/:id", uploader.single("imageUrl"), (req, res) => {
   let id = req.params.id;
   const avatar = req.file.path;
+  console.log("avatar route", id, req.file);
   UserModel.findByIdAndUpdate(
     id,
     {
