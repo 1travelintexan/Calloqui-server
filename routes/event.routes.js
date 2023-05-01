@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 let EventModel = require("../models/Event.model");
+const ConversationModel = require("../models/Conversation.model");
 
 router.get("/events", (req, res) => {
   EventModel.find()
@@ -33,6 +34,7 @@ router.get("/profile", (req, res) => {
 
 router.post("/create", (req, res) => {
   const { name, description, date, location, shaka } = req.body;
+  console.log("here is the session from the create post", req.session);
   let image =
     "https://images.unsplash.com/photo-1505144808419-1957a94ca61e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fHdhdmV8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60";
 
