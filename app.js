@@ -13,26 +13,12 @@ const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most middlewares
 require("./config")(app);
+require("./config/session.config")(app);
 
 //set up and connect mongo
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1";
-
-app.use(
-  session({
-    secret: "NotMyAge",
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24, //milli seconds, equal to one day
-    },
-    store: new MongoStore({
-      mongoUrl: MONGO_URI,
-      ttl: 60 * 60 * 24,
-    }),
-  })
-);
 
 //if you are looing for  static files then they are in the public folder
 const path = require("path");
