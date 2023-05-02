@@ -15,11 +15,6 @@ const app = express();
 require("./config")(app);
 require("./config/session.config")(app);
 
-//set up and connect mongo
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1";
-
 //if you are looing for  static files then they are in the public folder
 const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));

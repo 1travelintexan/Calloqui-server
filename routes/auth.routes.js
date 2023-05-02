@@ -67,57 +67,29 @@ router.post("/signup", isLoggedOut, async (req, res) => {
 // will handle all POST requests to http:localhost:5005/api/signin
 router.post("/signin", isLoggedOut, async (req, res) => {
   const { email, password } = req.body;
-
-  // -----SERVER SIDE VALIDATION ----------
-  /*
-    if ( !email || !password) {
-        res.status(500).json({
-            error: 'Please enter Username. email and password',
-       })
-      return;  
-    }
-    const myRegex = new RegExp(/^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/);
-    if (!myRegex.test(email)) {
-        res.status(500).json({
-            error: 'Email format not correct',
-        })
-        return;  
-    }
-    */
   try {
-    // Find if the user exists in the database
     let foundUser = await UserModel.findOne({ email });
-    console.log("found user", foundUser);
-    //check if passwords match
-    try {
+    if (foundUser) {
       let doesItMatch = await bcrypt.compare(password, foundUser.passwordHash);
-      //if password matches
       if (doesItMatch) {
-        // req.session is the special object that is available to you
-        //session is the user that is using your app
         foundUser.passwordHash = "***";
         req.session.loggedInUser = foundUser;
         res.status(200).json(foundUser);
-      }
-      //if passwords do not match
-      else {
+      } else {
         res.status(500).json({
-          error: "Password doesn't match",
+          error: "Incorrect Password",
         });
       }
-    } catch (err) {
-      console.log(err);
+    } else {
       res.status(500).json({
-        error: "Email format not correct",
+        error: "User not found",
       });
-      return;
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
-      error: "Email does not exist",
-      message: err,
+      error: err,
     });
-    return;
   }
 });
 
