@@ -17,12 +17,11 @@ const cors = require("cors");
 module.exports = (app) => {
   // Because this is a server that will accept requests from outside and it will be hosted ona server with a `proxy`, express needs to know that it should trust that setting.
   app.set("trust proxy", 1);
-
   // controls a very specific header to pass headers from the frontend
   app.use(
     cors({
       credentials: true,
-      origin: process.env.ORIGIN || "http://localhost:3000",
+      origin: "https://kook-club.netlify.app" || "http://localhost:3000",
     })
   );
 
