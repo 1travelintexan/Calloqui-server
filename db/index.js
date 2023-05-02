@@ -6,10 +6,10 @@ const mongoose = require("mongoose");
 // If no env has been set, we dynamically set it to whatever the folder name was upon the creation of the app
 //localhost address mongodb://127.0.0.1/Kook-club";
 const MONGO_URI =
-  "mongodb+srv://kook-club-main-db-0411f02b523:nH35dSWKatGxYqCVE1TYjSnZZ7j5Xj@prod-us-central1-2.ih9la.mongodb.net/kook-club-main-db-0411f02b523" ||
+  "mongodb+srv://kook-club-main-db-005fbb78337:NwbnyK2BsjxgkBTFCP1vFTbBnkRFp1@prod-us-central1-2.ih9la.mongodb.net/kook-club-main-db-005fbb78337" ||
   "mongodb://127.0.0.1/Kook-Club";
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI, { family: 4 })
   .then((x) => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
