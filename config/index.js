@@ -21,7 +21,7 @@ module.exports = (app) => {
   app.use(
     cors({
       credentials: true,
-      origin: "https://kook-club.netlify.app" || "http://localhost:3000",
+      origin: process.env.SERVER_URL || "http://localhost:3000",
     })
   );
 
